@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .sub {
+      background-color: rgb(219, 219, 219);
+      padding: 3px;
+      transition: background-color 0.3s;
+    }
+
+    .sub.selected {
+      background-color: black;
+      color: white;
+    }
+  </style>
+  <title>Arrow Filter</title>
+</head>
+<body>
+
+  <input type="text" name="buah" id="buah" placeholder="Filter List....">
+
+  <div id="list">
+
+  </div>
+
+  <script>
+    const fruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
+    const list = document.getElementById("list");
+
+    const filter = {
+      searchText: ''
+    };
+
+    const renderFruits = (fruits, filter) => {
+      const filtered = fruits.filter((fruit) => {
+        return fruit.toLowerCase().includes(filter.searchText.toLowerCase());
+      });
+
+      list.innerHTML = '';
+      filtered.forEach((item) => {
+        const tagP = document.createElement("p");
+        tagP.className = "sub";
+        const value = document.createTextNode(item);
+        tagP.appendChild(value);
+        list.appendChild(tagP);
+
+        tagP.addEventListener("click", function () {
+          // Remove the "selected" class from all elements
+          const allElements = document.querySelectorAll(".sub");
+          allElements.forEach((el) => el.classList.remove("selected"));
+
+          // Add the "selected" class to the clicked element
+          tagP.classList.add("selected");
+        });
+      });
+    };
+
+    renderFruits(fruits, filter);
+
+    document.querySelector("#buah").addEventListener("input", function (e) {
+      filter.searchText = e.target.value;
+      renderFruits(fruits, filter);
+    });
+  </script>
+</body>
+</html>
+
